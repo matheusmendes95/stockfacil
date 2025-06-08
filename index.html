@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Fácil - Gestão de Estoques Revolucionária</title>
+  <meta name="description" content="Transforme seu estoque com nossa gestão inteligente. Organização, controle e eficiência de alto nível para seu negócio.">
+  <meta name="keywords" content="gestão de estoque, organização, inventário, controle de estoque, logística">
+  
+  <!-- Preload critical resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+  
+  <style>
+    /* CSS Custom Properties */
+    :root {
+      --primary: #FF6F00;
+      --primary-dark: #E65100;
+      --primary-light: #FFB74D;
+      --secondary: #3D5AFE;
+      --secondary-dark: #304FFE;
+      --accent: #00E676;
+      --accent-dark: #00C853;
+      
+      --bg-primary: #0A0A0B;
+      --bg-secondary: #111113;
+      --bg-tertiary: #1A1A1D;
+      --card-bg: #1F1F23;
+      --card-hover: #252529;
+      
+      --text-primary: #FFFFFF;
+      --text-secondary: #E0E0E0;
+      --text-muted: #A0A0A5;
+      --text-accent: #B0B0B5;
+      
+      --border-color: #2A2A2E;
+      --border-hover: #3A3A3E;
+      
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+      --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.25);
+      
+      --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+      --gradient-bg: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      
+      --border-radius-sm: 8px;
+      --border-radius-md: 12px;
+      --border-radius-lg: 16px;
+      --border-radius-xl: 24px;
+      
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.3s ease;
+      --transition-slow: 0.5s ease;
+      
+      --container-max-width: 1200px;
+      --container-padding: clamp(1rem, 5vw, 2rem);
+    }
+
+    /* Reset and Base Styles */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: clamp(14px, 1.5vw, 16px);
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Utility Classes */
+    .container {
+      max-width: var(--container-max-width);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 11, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      transition: all var(--transition-normal);
+      transform: translateY(0);
+    }
+
+    .navbar.hidden {
+      transform: translateY(-100%);
+    }
+
+    .navbar.scrolled {
+      background: rgba(10, 10, 11, 0.95);
+      box-shadow: var(--shadow-md);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem var(--container-padding);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+      transition: all var(--transition-normal);
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: all var(--transition-normal);
+      padding: 0.5rem 0;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-primary);
+      transition: width var(--transition-normal);
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      background: var(--gradient-primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--border-radius-md);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all var(--transition-normal);
+      box-shadow: var(--shadow-md);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: var(--border-radius-sm);
+      transition: all var(--transition-fast);
+    }
+
+    .mobile-menu-toggle:hover {
+      background: var(--card-bg);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--gradient-bg);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 111, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(61, 90, 254, 0.1) 0%, transparent 50%);
+      animation: gradientShift 8s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius-xl);
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.125rem, 3vw, 1.5rem);
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: fadeInUp 0.8s ease 0.6s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease 0.8s both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: var(--border-radius-md);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all var(--transition-normal);
+      cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Floating Elements */
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .floating-element {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-element:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+    .floating-element:nth-child(2) { top: 60%; left: 20%; animation-delay: 1s; }
+    .floating-element:nth-child(3) { top: 40%; right: 15%; animation-delay: 2s; }
+    .floating-element:nth-child(4) { top: 80%; right: 25%; animation-delay: 3s; }
+    .floating-element:nth-child(5) { top: 30%; left: 70%; animation-delay: 4s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+      50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+    }
+
+    /* Sections */
+    .section {
+      padding: clamp(4rem, 10vw, 8rem) 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-badge {
+      display: inline-block;
+      background: var(--gradient-primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius-xl);
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Services Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-lg);
+      padding: 2.5rem;
+      transition: all var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+      transform: scaleX(0);
+      transition: transform var(--transition-normal);
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      background: var(--card-hover);
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .service-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--gradient-primary);
+      border-radius: var(--border-radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all var(--transition-normal);
+    }
+
+    .service-card:hover .service-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .service-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .service-description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-features {
+      list-style: none;
+    }
+
+    .service-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .service-features li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Plans Section */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .plan-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-lg);
+      padding: 2.5rem;
+      position: relative;
+      transition: all var(--transition-normal);
+      text-align: center;
+    }
+
+    .plan-card.featured {
+      border-color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    .plan-card.featured::before {
+      content: 'Mais Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gradient-primary);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius-xl);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .plan-card.featured:hover {
+      transform: translateY(-8px) scale(1.05);
+    }
+
+    .plan-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .plan-price {
+      font-size: 3rem;
+      font-weight: 800;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .plan-period {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .plan-features {
+      list-style: none;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .plan-features li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 1.125rem;
+    }
+
+    .plan-cta {
+      width: 100%;
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: var(--border-radius-md);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      box-shadow: var(--shadow-md);
+    }
+
+    .plan-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Contact Section */
+    .contact-section {
+      background: var(--bg-secondary);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .contact-info h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .contact-info p {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .contact-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-method {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--card-bg);
+      border-radius: var(--border-radius-md);
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all var(--transition-normal);
+      border: 1px solid var(--border-color);
+    }
+
+    .contact-method:hover {
+      background: var(--card-hover);
+      border-color: var(--primary);
+      transform: translateX(8px);
+    }
+
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--gradient-primary);
+      border-radius: var(--border-radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .contact-details h4 {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .contact-details p {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin: 0;
+    }
+
+    /* Form */
+    .contact-form {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-lg);
+      padding: 2.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: all var(--transition-normal);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 111, 0, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-submit {
+      width: 100%;
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: var(--border-radius-md);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .form-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-message {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: var(--border-radius-md);
+      font-weight: 500;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all var(--transition-normal);
+    }
+
+    .form-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .form-message.success {
+      background: rgba(0, 230, 118, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(0, 230, 118, 0.2);
+    }
+
+    .form-message.error {
+      background: rgba(244, 67, 54, 0.1);
+      color: #ff6b6b;
+      border: 1px solid rgba(244, 67, 54, 0.2);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      padding: 3rem 0 2rem;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h4 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .footer-section p,
+    .footer-section a {
+      color: var(--text-muted);
+      text-decoration: none;
+      line-height: 1.6;
+      transition: color var(--transition-normal);
+    }
+
+    .footer-section a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease both;
+    }
+
+    /* Scroll Animations */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+    }
+
+    .scroll-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-menu {
+        position: fixed;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 11, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1rem;
+        border-top: 1px solid var(--border-color);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-normal);
+      }
+
+      .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .services-grid,
+      .plans-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .plan-card.featured {
+        transform: none;
+      }
+
+      .plan-card.featured:hover {
+        transform: translateY(-8px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-container {
+        padding: 1rem;
+      }
+
+      .service-card,
+      .plan-card,
+      .contact-form {
+        padding: 1.5rem;
+      }
+
+      .btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.875rem;
+      }
+    }
+
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+      :root {
+        --border-color: #555;
+        --text-muted: #ccc;
+      }
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      .navbar,
+      .floating-elements,
+      .contact-form {
+        display: none;
+      }
+
+      body {
+        background: white;
+        color: black;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">Stock Fácil</a>
+      
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#servicos" class="nav-link">Serviços</a></li>
+        <li><a href="#planos" class="nav-link">Planos</a></li>
+        <li><a href="#contato" class="nav-link">Contato</a></li>
+        <li><a href="#orcamento" class="nav-cta">Orçamento Grátis</a></li>
+      </ul>
+
+      <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Abrir menu">
+        <span>☰</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="floating-elements">
+      <div class="floating-element"></div>
+      <div class="floating-element"></div>
+      <div class="floating-element"></div>
+      <div class="floating-element"></div>
+      <div class="floating-element"></div>
+    </div>
+    
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span>🚀</span>
+          <span>Revolucione seu estoque hoje</span>
+        </div>
+        
+        <h1 class="hero-title">
+          Gestão de Estoque<br>
+          <span style="background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Inteligente</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+          Transforme o caos em eficiência com nossa metodologia revolucionária. 
+          Organização, controle e resultados que impactam diretamente no seu faturamento.
+        </p>
+        
+        <div class="hero-cta">
+          <a href="#orcamento" class="btn btn-primary">
+            <span>📞</span>
+            <span>Solicitar Orçamento</span>
+          </a>
+          <a href="#servicos" class="btn btn-secondary">
+            <span>📋</span>
+            <span>Conhecer Serviços</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="section" id="servicos">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <div class="section-badge">Nossos Serviços</div>
+        <h2 class="section-title">Soluções Completas para seu Estoque</h2>
+        <p class="section-subtitle">
+          Metodologia comprovada que transforma a gestão do seu estoque em vantagem competitiva
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card scroll-reveal">
+          <div class="service-icon">📦</div>
+          <h3 class="service-title">Organização de Estoque</h3>
+          <p class="service-description">
+            Transformamos o caos em eficiência com metodologia aplicada e categorização inteligente que reduz tempo de busca em até 70%.
+          </p>
+          <ul class="service-features">
+            <li>Categorização por ABC</li>
+            <li>Layout otimizado</li>
+            <li>Identificação visual</li>
+            <li>Fluxo de movimentação</li>
+          </ul>
+        </div>
+
+        <div class="service-card scroll-reveal">
+          <div class="service-icon">🔍</div>
+          <h3 class="service-title">Conferência de Estoque</h3>
+          <p class="service-description">
+            Conferência rigorosa com tecnologia e planilhas otimizadas. Precisão de 99,8% garantida em todos os processos.
+          </p>
+          <ul class="service-features">
+            <li>Auditoria completa</li>
+            <li>Relatórios detalhados</li>
+            <li>Identificação de perdas</li>
+            <li>Plano de correção</li>
+          </ul>
+        </div>
+
+        <div class="service-card scroll-reveal">
+          <div class="service-icon">📊</div>
+          <h3 class="service-title">Inventário Completo</h3>
+          <p class="service-description">
+            Executamos inventário físico com metodologia de contagem cega e acompanhamento técnico especializado.
+          </p>
+          <ul class="service-features">
+            <li>Contagem cega</li>
+            <li>Dupla verificação</li>
+            <li>Análise de divergências</li>
+            <li>Relatório executivo</li>
+          </ul>
+        </div>
+
+        <div class="service-card scroll-reveal">
+          <div class="service-icon">🎯</div>
+          <h3 class="service-title">Endereçamento Inteligente</h3>
+          <p class="service-description">
+            Designamos locais lógicos e padronizados para cada produto, reduzindo tempo e erro na separação em até 60%.
+          </p>
+          <ul class="service-features">
+            <li>Mapeamento completo</li>
+            <li>Códigos padronizados</li>
+            <li>Otimização de rotas</li>
+            <li>Treinamento da equipe</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Plans Section -->
+  <section class="section" id="planos">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <div class="section-badge">Planos</div>
+        <h2 class="section-title">Escolha o Plano Ideal</h2>
+        <p class="section-subtitle">
+          Soluções flexíveis que se adaptam ao tamanho e necessidade do seu negócio
+        </p>
+      </div>
+
+      <div class="plans-grid">
+        <div class="plan-card scroll-reveal">
+          <h3 class="plan-name">Plano Básico</h3>
+          <div class="plan-price">R$ 199</div>
+          <div class="plan-period">por mês</div>
+          
+          <ul class="plan-features">
+            <li>1 visita mensal especializada</li>
+            <li>Diagnóstico inicial completo</li>
+            <li>Relatório simples de melhorias</li>
+            <li>Suporte via WhatsApp</li>
+            <li>Orientações básicas</li>
+          </ul>
+          
+          <button class="plan-cta">Escolher Plano</button>
+        </div>
+
+        <div class="plan-card featured scroll-reveal">
+          <h3 class="plan-name">Plano Plus</h3>
+          <div class="plan-price">R$ 349</div>
+          <div class="plan-period">por mês</div>
+          
+          <ul class="plan-features">
+            <li>2 visitas mensais</li>
+            <li>Acompanhamento via WhatsApp</li>
+            <li>Inventário trimestral</li>
+            <li>Relatórios detalhados</li>
+            <li>Treinamento da equipe</li>
+            <li>Suporte prioritário</li>
+          </ul>
+          
+          <button class="plan-cta">Escolher Plano</button>
+        </div>
+
+        <div class="plan-card scroll-reveal">
+          <h3 class="plan-name">Plano Mega</h3>
+          <div class="plan-price">R$ 599</div>
+          <div class="plan-period">por mês</div>
+          
+          <ul class="plan-features">
+            <li>Visita semanal especializada</li>
+            <li>Análise completa de perdas</li>
+            <li>Relatórios estratégicos</li>
+            <li>Plano de ação personalizado</li>
+            <li>Consultoria estratégica</li>
+            <li>Suporte 24/7</li>
+          </ul>
+          
+          <button class="plan-cta">Escolher Plano</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section contact-section" id="contato">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <div class="section-badge">Contato</div>
+        <h2 class="section-title">Vamos Conversar?</h2>
+        <p class="section-subtitle">
+          Entre em contato conosco e descubra como podemos revolucionar seu estoque
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info scroll-reveal">
+          <h3>Especialistas em Grandes Marcas</h3>
+          <p>
+            Temos experiência comprovada com Boticário, Eudora, Natura e outras grandes marcas do varejo de cosméticos. 
+            Nossa metodologia é adaptada para diferentes segmentos e tamanhos de negócio.
+          </p>
+
+          <div class="contact-methods">
+            <a href="https://wa.me/5598981337601" class="contact-method" target="_blank" rel="noopener">
+              <div class="contact-icon">📱</div>
+              <div class="contact-details">
+                <h4>WhatsApp</h4>
+                <p>(98) 9 8133-7601</p>
+              </div>
+            </a>
+
+            <a href="tel:+5598981337601" class="contact-method">
+              <div class="contact-icon">📞</div>
+              <div class="contact-details">
+                <h4>Telefone</h4>
+                <p>(98) 9 8133-7601</p>
+              </div>
+            </a>
+
+            <a href="mailto:contato@stockfacil.com.br" class="contact-method">
+              <div class="contact-icon">✉️</div>
+              <div class="contact-details">
+                <h4>E-mail</h4>
+                <p>contato@stockfacil.com.br</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-form scroll-reveal" id="orcamento">
+          <h3 style="margin-bottom: 1.5rem; color: var(--text-primary);">Solicite um Orçamento</h3>
+          
+          <form name="submit-to-google-sheet" id="contact-form">
+            <div class="form-group">
+              <label for="nome" class="form-label">Nome Completo</label>
+              <input type="text" id="nome" name="nome" class="form-input" placeholder="Seu nome completo" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="form-label">E-mail</label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="telefone" class="form-label">Telefone/WhatsApp</label>
+              <input type="tel" id="telefone" name="telefone" class="form-input" placeholder="(00) 0 0000-0000" required>
+            </div>
+
+            <div class="form-group">
+              <label for="empresa" class="form-label">Empresa</label>
+              <input type="text" id="empresa" name="empresa" class="form-input" placeholder="Nome da sua empresa">
+            </div>
+
+            <div class="form-group">
+              <label for="mensagem" class="form-label">Descreva sua necessidade</label>
+              <textarea id="mensagem" name="mensagem" class="form-input form-textarea" placeholder="Conte-nos sobre seu estoque e principais desafios..." rows="4"></textarea>
+            </div>
+
+            <button type="submit" class="form-submit" id="submit-btn">
+              <span>Enviar Solicitação</span>
+            </button>
+
+            <div class="form-message" id="form-message"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Stock Fácil</h4>
+          <p>Revolucionando a gestão de estoques com metodologia comprovada e resultados garantidos.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Serviços</h4>
+          <p><a href="#servicos">Organização de Estoque</a></p>
+          <p><a href="#servicos">Conferência e Inventário</a></p>
+          <p><a href="#servicos">Endereçamento Inteligente</a></p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Contato</h4>
+          <p><a href="https://wa.me/5598981337601" target="_blank">(98) 9 8133-7601</a></p>
+          <p><a href="mailto:contato@stockfacil.com.br">contato@stockfacil.com.br</a></p>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Stock Fácil. Desenvolvido com excelência logística. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll behavior
+    let lastScrollTop = 0;
+    const navbar = document.getElementById('navbar');
+    
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      // Add scrolled class for backdrop effect
+      if (scrollTop > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+      
+      // Hide/show navbar on scroll
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        navbar.classList.add('hidden');
+      } else {
+        navbar.classList.remove('hidden');
+      }
+      
+      lastScrollTop = scrollTop;
+    });
+
+    // Mobile menu toggle
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    
+    mobileToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      const isActive = navMenu.classList.contains('active');
+      mobileToggle.innerHTML = isActive ? '<span>✕</span>' : '<span>☰</span>';
+      mobileToggle.setAttribute('aria-label', isActive ? 'Fechar menu' : 'Abrir menu');
+    });
+
+    // Close mobile menu when clicking on links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        mobileToggle.innerHTML = '<span>☰</span>';
+        mobileToggle.setAttribute('aria-label', 'Abrir menu');
+      });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Scroll reveal animation
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all scroll-reveal elements
+    document.querySelectorAll('.scroll-reveal').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Form handling
+    const form = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const formMessage = document.getElementById('form-message');
+    
+    // Form validation
+    function validateForm() {
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      
+      if (!nome || !email || !telefone) {
+        showMessage('Por favor, preencha todos os campos obrigatórios.', 'error');
+        return false;
+      }
+      
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showMessage('Por favor, insira um e-mail válido.', 'error');
+        return false;
+      }
+      
+      return true;
+    }
+    
+    function showMessage(message, type) {
+      formMessage.textContent = message;
+      formMessage.className = `form-message ${type} show`;
+      
+      setTimeout(() => {
+        formMessage.classList.remove('show');
+      }, 5000);
+    }
+    
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      submitBtn.innerHTML = loading ? 
+        '<span>Enviando...</span>' : 
+        '<span>Enviar Solicitação</span>';
+    }
+
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (!validateForm()) return;
+      
+      setLoading(true);
+      
+      try {
+        // Simulate form submission (replace with actual endpoint)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        showMessage('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
+        form.reset();
+        
+        // Optional: Send to Google Sheets or other service
+        // const formData = new FormData(form);
+        // const response = await fetch('YOUR_SCRIPT_URL', {
+        //   method: 'POST',
+        //   body: formData
+        // });
+        
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage('Erro ao enviar mensagem. Tente novamente ou entre em contato via WhatsApp.', 'error');
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    // Plan selection
+    document.querySelectorAll('.plan-cta').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const planName = e.target.closest('.plan-card').querySelector('.plan-name').textContent;
+        
+        // Scroll to contact form
+        document.getElementById('orcamento').scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        
+        // Pre-fill message
+        setTimeout(() => {
+          const messageField = document.getElementById('mensagem');
+          messageField.value = `Olá! Tenho interesse no ${planName}. Gostaria de mais informações.`;
+          messageField.focus();
+        }, 1000);
+      });
+    });
+
+    // Enhanced accessibility
+    document.addEventListener('keydown', (e) => {
+      // Escape key closes mobile menu
+      if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+        navMenu.classList.remove('active');
+        mobileToggle.innerHTML = '<span>☰</span>';
+        mobileToggle.setAttribute('aria-label', 'Abrir menu');
+      }
+    });
+
+    // Performance optimization: Lazy load images
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.classList.remove('lazy');
+            imageObserver.unobserve(img);
+          }
+        });
+      });
+
+      document.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+      });
+    }
+
+    // Add loading animation to buttons
+    document.querySelectorAll('.btn, .plan-cta').forEach(button => {
+      button.addEventListener('click', function() {
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          this.style.transform = '';
+        }, 150);
+      });
+    });
+
+    // Console easter egg
+    console.log(`
+    🚀 Stock Fácil - Gestão de Estoque Revolucionária
+    
+    Desenvolvido com:
+    ❤️ Paixão por código limpo
+    🎨 Design moderno e responsivo
+    ⚡ Performance otimizada
+    ♿ Acessibilidade em mente
+    
+    Interessado em nossos serviços de desenvolvimento?
+    Entre em contato: contato@stockfacil.com.br
+    `);
+  </script>
+</body>
+</html>
+
