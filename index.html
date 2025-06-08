@@ -1402,34 +1402,36 @@
     }
 
     // Form submission
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      if (!validateForm()) return;
-      
-      setLoading(true);
-      
-      try {
-        // Simulate form submission (replace with actual endpoint)
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        showMessage('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
-        form.reset();
-        
-        // Optional: Send to Google Sheets or other service
-        // const formData = new FormData(form);
-        // const response = await fetch('YOUR_SCRIPT_URL', {
-        //   method: 'POST',
-        //   body: formData
-        // });
-        
-      } catch (error) {
-        console.error('Error:', error);
-        showMessage('Erro ao enviar mensagem. Tente novamente ou entre em contato via WhatsApp.', 'error');
-      } finally {
-        setLoading(false);
-      }
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbygzC2bOmqJCVJcsQGc91mMhX_kFCBHTRCG8GVzi0e29znCQRAViupq7fYhvUghqfk/exec';
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  if (!validateForm()) return;
+  
+  setLoading(true);
+
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch(scriptURL, {
+      method: 'POST',
+      body: formData
     });
+
+    if (response.ok) {
+      showMessage('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
+      form.reset();
+    } else {
+      showMessage('Erro ao enviar. Tente novamente mais tarde.', 'error');
+    }
+  } catch (error) {
+    console.error('Erro:', error);
+    showMessage('Erro ao enviar. Tente novamente mais tarde.', 'error');
+  } finally {
+    setLoading(false);
+  }
+});
 
     // Plan selection
     document.querySelectorAll('.plan-cta').forEach(button => {
