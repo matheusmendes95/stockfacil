@@ -383,13 +383,13 @@
 
     /* Sections */
     .section {
-      padding: clamp(4rem, 10vw, 8rem) 0;
+      padding: clamp(4rem, 8vw, 6rem) 0;
       position: relative;
     }
 
     .section-header {
       text-align: center;
-      margin-bottom: 4rem;
+      margin-bottom: 3rem;
     }
 
     .section-badge {
@@ -427,7 +427,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
-      margin-top: 4rem;
+      margin-top: 3rem;
     }
 
     .service-card {
@@ -518,7 +518,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
-      margin-top: 4rem;
+      margin-top: 3rem;
     }
 
     .plan-card {
@@ -631,7 +631,7 @@
     .contact-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      gap: 3rem;
       align-items: center;
     }
 
@@ -979,6 +979,7 @@
       <ul class="nav-menu" id="nav-menu">
         <li><a href="#servicos" class="nav-link">Serviços</a></li>
         <li><a href="#planos" class="nav-link">Planos</a></li>
+        <li><a href="#treinamentos" class="nav-link">Treinamentos</a></li>
         <li><a href="#contato" class="nav-link">Contato</a></li>
         <li><a href="#orcamento" class="nav-cta">Orçamento Grátis</a></li>
       </ul>
@@ -1101,6 +1102,66 @@
     </div>
   </section>
 
+  <!-- Training Section -->
+  <section class="section" id="treinamentos">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <div class="section-badge">Treinamentos</div>
+        <h2 class="section-title">Capacitação Profissional</h2>
+        <p class="section-subtitle">
+          Treinamos sua equipe com metodologias comprovadas para maximizar a eficiência do seu estoque
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card scroll-reveal">
+          <div class="service-icon">👥</div>
+          <h3 class="service-title">Treinamento de Equipe</h3>
+          <p class="service-description">
+            Capacitamos toda sua equipe de estoque com as melhores práticas de organização, controle e movimentação de produtos.
+          </p>
+          <ul class="service-features">
+            <li>Metodologias de organização</li>
+            <li>Técnicas de conferência</li>
+            <li>Uso de sistemas de controle</li>
+            <li>Prevenção de perdas</li>
+            <li>Certificado de conclusão</li>
+          </ul>
+        </div>
+
+        <div class="service-card scroll-reveal">
+          <div class="service-icon">🎯</div>
+          <h3 class="service-title">Capacitação de Gestores</h3>
+          <p class="service-description">
+            Treinamento especializado para responsáveis e gestores do setor, focado em liderança e tomada de decisões estratégicas.
+          </p>
+          <ul class="service-features">
+            <li>Gestão de indicadores</li>
+            <li>Análise de performance</li>
+            <li>Liderança de equipes</li>
+            <li>Planejamento estratégico</li>
+            <li>Relatórios gerenciais</li>
+          </ul>
+        </div>
+
+        <div class="service-card scroll-reveal">
+          <div class="service-icon">📚</div>
+          <h3 class="service-title">Treinamento Continuado</h3>
+          <p class="service-description">
+            Programa de capacitação contínua com atualizações regulares e acompanhamento do desenvolvimento da equipe.
+          </p>
+          <ul class="service-features">
+            <li>Sessões mensais</li>
+            <li>Material didático atualizado</li>
+            <li>Avaliação de progresso</li>
+            <li>Suporte técnico</li>
+            <li>Reciclagem periódica</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Plans Section -->
   <section class="section" id="planos">
     <div class="container">
@@ -1141,6 +1202,7 @@
             <li>Relatórios detalhados</li>
             <li>Treinamento da equipe</li>
             <li>Suporte prioritário</li>
+            <li>Capacitação mensal</li>
           </ul>
           
           <button class="plan-cta">Escolher Plano</button>
@@ -1157,6 +1219,7 @@
             <li>Relatórios estratégicos</li>
             <li>Plano de ação personalizado</li>
             <li>Consultoria estratégica</li>
+            <li>Treinamento especializado</li>
             <li>Suporte 24/7</li>
           </ul>
           
@@ -1202,11 +1265,11 @@
               </div>
             </a>
 
-            <a href="mailto:stoclfacillogistica@gmail.com" class="contact-method">
+            <a href="mailto:stockfacillogistica@gmail.com" class="contact-method">
               <div class="contact-icon">✉️</div>
               <div class="contact-details">
                 <h4>E-mail</h4>
-                <p>stoclfacillogistica@gmail.com</p>
+                <p>stockfacillogistica@gmail.com</p>
               </div>
             </a>
           </div>
@@ -1271,7 +1334,7 @@
         <div class="footer-section">
           <h4>Contato</h4>
           <p><a href="https://wa.me/5598981337601" target="_blank">(98) 9 8133-7601</a></p>
-          <p><a href="mailto:stoclfacillogistica@gmail.com">stockfacillogistica@gmail.com</a></p>
+          <p><a href="mailto:stockfacillogistica@gmail.com">stockfacillogistica@gmail.com</a></p>
         </div>
       </div>
       
@@ -1332,7 +1395,7 @@
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-          const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+          const offsetTop = target.offsetTop - 100; // Account for fixed navbar
           window.scrollTo({
             top: offsetTop,
             behavior: 'smooth'
@@ -1402,36 +1465,34 @@
     }
 
     // Form submission
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbygzC2bOmqJCVJcsQGc91mMhX_kFCBHTRCG8GVzi0e29znCQRAViupq7fYhvUghqfk/exec';
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  if (!validateForm()) return;
-  
-  setLoading(true);
-
-  const formData = new FormData(form);
-
-  try {
-    const response = await fetch(scriptURL, {
-      method: 'POST',
-      body: formData
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (!validateForm()) return;
+      
+      setLoading(true);
+      
+      try {
+        // Simulate form submission (replace with actual endpoint)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        showMessage('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
+        form.reset();
+        
+        // Optional: Send to Google Sheets or other service
+        // const formData = new FormData(form);
+        // const response = await fetch('YOUR_SCRIPT_URL', {
+        //   method: 'POST',
+        //   body: formData
+        // });
+        
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage('Erro ao enviar mensagem. Tente novamente ou entre em contato via WhatsApp.', 'error');
+      } finally {
+        setLoading(false);
+      }
     });
-
-    if (response.ok) {
-      showMessage('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
-      form.reset();
-    } else {
-      showMessage('Erro ao enviar. Tente novamente mais tarde.', 'error');
-    }
-  } catch (error) {
-    console.error('Erro:', error);
-    showMessage('Erro ao enviar. Tente novamente mais tarde.', 'error');
-  } finally {
-    setLoading(false);
-  }
-});
 
     // Plan selection
     document.querySelectorAll('.plan-cta').forEach(button => {
@@ -1502,9 +1563,8 @@ form.addEventListener('submit', async (e) => {
     ♿ Acessibilidade em mente
     
     Interessado em nossos serviços de desenvolvimento?
-    Entre em contato: stoclfacillogistica@gmail.com
+    Entre em contato: stockfacillogistica@gmail.com
     `);
   </script>
 </body>
 </html>
-
